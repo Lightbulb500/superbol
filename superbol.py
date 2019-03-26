@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-version = '1.1 '
+version = '1.15 '
 
 '''
     SUPERBOL: Supernova Bolometric Light Curves
     Written by Matt Nicholl, 2015-2018
-
+    
+    Version 1.15: Added LSQgr filter, modified outputs to include filter bandpass information (PC)
     Version 1.1 : Add bibliographic reference, output file now includes K-correction info (MN)
     Version 1.0 : Release version, Nicholl 2018 RNAAS (MN)
     Version 0.17: Fix bug to write nans instead of blanks when BB fit fails (MN)
@@ -248,9 +249,10 @@ def cosmocalc(z):
 #Effective wavelengths (in Angs)
 wle = {'u': 3560,  'g': 4830, 'r': 6260, 'i': 7670, 'z': 8890, 'y': 9600, 'Y': 9600,
        'U': 3600,  'B': 4380, 'V': 5450, 'R': 6410, 'G': 6730, 'I': 7980, 'J': 12200, 'H': 16300,
-       'K': 21900, 'S': 2030, 'D': 2231, 'A': 2634, 'F': 1516, 'N': 2267, 'o': 6790, 'c': 5330}
+       'K': 21900, 'S': 2030, 'D': 2231, 'A': 2634, 'F': 1516, 'N': 2267, 'o': 6790, 'c': 5330, 'Q':5537.50}
 # For Swift UVOT: S=UVW2, D=UVM2, A=UVW1
 # For GALEX: F=FUV, N=NUV
+# LSQgr = Q
 
 
 # The below zeropoints are needed to convert magnitudes to fluxes
@@ -279,22 +281,22 @@ wle = {'u': 3560,  'g': 4830, 'r': 6260, 'i': 7670, 'z': 8890, 'y': 9600, 'Y': 9
 #All values in 1e-11 erg/s/cm2/Angs
 zp = {'u': 859.5, 'g': 466.9, 'r': 278.0, 'i': 185.2, 'z': 137.8, 'y': 118.2, 'Y': 118.2,
       'U': 417.5, 'B': 632.0, 'V': 363.1, 'R': 217.7, 'G': 240.0, 'I': 112.6, 'J': 31.47, 'H': 11.38,
-      'K': 3.961, 'S': 536.2, 'D': 463.7, 'A': 412.3, 'F': 4801., 'N': 2119., 'o': 236.2, 'c': 383.3}
+      'K': 3.961, 'S': 536.2, 'D': 463.7, 'A': 412.3, 'F': 4801., 'N': 2119., 'o': 236.2, 'c': 383.3, 'Q':355.1}
 
 #Filter widths (in Angs)
 width = {'u': 458,  'g': 928, 'r': 812, 'i': 894,  'z': 1183, 'y': 628, 'Y': 628,
          'U': 485,  'B': 831, 'V': 827, 'R': 1389, 'G': 4203, 'I': 899, 'J': 1759, 'H': 2041,
-         'K': 2800, 'S': 671, 'D': 446, 'A': 821,  'F': 268,  'N': 732, 'o': 2580, 'c': 2280}
+         'K': 2800, 'S': 671, 'D': 446, 'A': 821,  'F': 268,  'N': 732, 'o': 2580, 'c': 2280, 'Q': 1450.}
 
 # Colours for plots
 cols = {'u': 'dodgerblue', 'g': 'g', 'r': 'r', 'i': 'goldenrod', 'z': 'k', 'y': '0.5',
         'Y': '0.5', 'U': 'slateblue', 'B': 'b', 'V': 'yellowgreen', 'R': 'crimson', 'G': 'salmon',
         'I': 'chocolate', 'J': 'darkred', 'H': 'orangered', 'K': 'saddlebrown',
         'S': 'mediumorchid', 'D': 'purple', 'A': 'midnightblue',
-        'F': 'hotpink', 'N': 'magenta', 'o': 'darkorange', 'c': 'cyan'}
+        'F': 'hotpink', 'N': 'magenta', 'o': 'darkorange', 'c': 'cyan', 'Q':'gold'}
 
 # Maintains order from blue to red effective wavelength
-bandlist = 'FSDNAuUBgcVrRoGiIzyYJHK'
+bandlist = 'FSDNAuUBgcVQrRoGiIzyYJHK'
 
 
 

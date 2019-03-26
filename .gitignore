@@ -1,3 +1,5 @@
 example/*output*
 superbol-old
 superbol-old/*
+*.txt
+*.pdf
